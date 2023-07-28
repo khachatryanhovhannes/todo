@@ -1,0 +1,65 @@
+.singleTaskBack{
+    min-height: 100vh;
+    max-height: 100%;
+    background-color: lavender;
+    border: 1px solid transparent;
+}
+
+.singleTask{
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+    background-color: rgb(187, 187, 187);
+    border-radius: 30px;
+    padding: 20px 30px 50px;
+}
+
+.singleTask h1{
+    font-weight: 300;
+    font-size: 50px;
+}
+
+.singleTask h2{
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+}
+
+
+.singleTask h3{
+    margin: 0;
+    padding: 0;
+    font-weight: 300;
+}
+
+.singleTask button{
+    padding: 10px 25px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+    background-color: lightcoral;
+}
+
+.singleTask button:hover{
+
+    background-color: coral;
+}
+
+.singleTaskBack input{
+    display: inline-block;
+    margin: 5px 50px    ;
+    padding: 10px 25px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+    color: rgb(219, 219, 219);
+    background-color: rgb(104, 104, 104);
+}
+
+.singleTaskBack input:hover{
+    color: rgb(253, 253, 253);
+    background-color: rgb(63, 63, 63);
+}

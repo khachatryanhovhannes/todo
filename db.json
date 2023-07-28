@@ -1,0 +1,49 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "tasks": [
+    {
+      "title": "1111111111111111111111111",
+      "description": "11111111111111",
+      "importance": "High",
+      "developer": "Spider Man",
+      "id": 1
+    },
+    {
+      "title": "2222222222222",
+      "description": "22222222222222",
+      "importance": "High",
+      "developer": "Tom and Jerry",
+      "id": 2
+    },
+    {
+      "title": "33333333333333333333333",
+      "description": "3333333333333333333",
+      "importance": "Low",
+      "developer": "Micky Mouse",
+      "id": 3
+    },
+    {
+      "title": "354867754321",
+      "description": "kjghlgvj",
+      "importance": "Low",
+      "developer": "Spider Man",
+      "id": 4
+    }
+  ]
+}

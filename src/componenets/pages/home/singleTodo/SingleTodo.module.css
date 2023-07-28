@@ -1,0 +1,44 @@
+.checkbox {
+    text-align: right;
+}
+
+.checkbox input {
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    box-shadow: 0 0 5px gray;
+    border: none;
+    border: 1px solid grey;
+}
+
+h1{
+    overflow: hidden;
+}
+
+.trash {
+    padding: 13px;
+    font-size: 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    background-color: red;
+    opacity: 0.8;
+    box-shadow: 0 0 5px red;
+}
+
+.trash:hover,
+.edit:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+.edit{
+    padding: 13px;
+    font-size: 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(114, 255, 112);
+    box-shadow: 0 0 5px rgb(114, 255, 112);
+    opacity: 0.8;
+}

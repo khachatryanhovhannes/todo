@@ -1,0 +1,56 @@
+.addButton{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.addButton button{
+    padding: 15px 60px;
+    border: none;
+    outline: none;
+    background-color: black;
+    color: rgb(202, 202, 202);
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.pageControls{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 20px 60px;
+}
+
+.pageControls>button:first-child{
+    padding: 15px 60px;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: rgb(255, 44, 44);
+    color: rgb(209, 209, 209);
+}
+
+.pageControls>button:first-child:hover{
+    color: white;
+    background-color: red;
+}
+.drawTodoList{
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+
+.singleTodo{
+    margin-top: 40px;
+    width: 31%;
+    padding: 20px;
+    text-align: center;
+    border-radius: 30px;
+    box-shadow: 0 0 10px grey;
+}
+

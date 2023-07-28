@@ -1,0 +1,121 @@
+.addTaskModalBack {
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.addTaskModalBack form {
+    background-color: white;
+    border-radius: 30px;
+    padding: 30px;
+    margin: 50px auto;
+    width: 70%;
+}
+
+.formHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.formHeader h3 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.formHeader button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: 300;
+    color: rgb(88, 88, 88);
+}
+
+.formHeader button:hover {
+    color: black
+}
+
+form>div>label {
+    display: inline-block;
+    width: 200px;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+form input:not(input[type="submit"]),
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: transparent;
+    border: 1px solid grey;
+}
+
+form input:not(input[type="submit"]):focus,
+form textarea:focus,
+form select:focus{
+    border-color: aqua;
+    box-shadow: 0 0 5px black;
+} 
+
+
+.labelInput {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.radios{
+    width: 100%;
+}
+
+.radios label{
+    font-size: 17px;
+    font-weight: 300;
+}
+
+.radios input{
+    width: auto !important;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.buttons *{
+    padding: 10px 25px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+}
+
+.buttons input{
+    background-color: lightgreen;
+}
+
+.buttons input:hover{
+    background-color: rgb(0, 167, 0);
+}
+
+.buttons button{
+    background-color: lightcoral;
+}
+
+.buttons button:hover{
+    background-color: coral;
+}
+
