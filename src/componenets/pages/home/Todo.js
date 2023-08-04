@@ -5,10 +5,16 @@ import styles from "./todo.module.css"
 import SingleTodo from "./singleTodo/SingleTodo";
 import RemoveCheckedTaskModal from "../../modals/removeCheckedTaskModal/RemoveCheckedTaskModal";
 import EditTaskModal from "../../modals/editTaskModal/EditTaskModal";
-
+import { useGetAllTasksQuery } from "../../../redux/API/API";
 
 
 export default function Todo() {
+
+    const { data, error, isLoading } = useGetAllTasksQuery("")
+    console.log(data)
+    console.log(error)
+    console.log(isLoading)
+
     let [toDoList, setToDoList] = useState([])
     const [editTask, setEditTask] = useState(null)
     const [showEditTaskModal, setShowEditTaskModal] = useState(false)
@@ -16,21 +22,28 @@ export default function Todo() {
     const [toggleConfirmModal, setToggleConfirmModal] = useState(false)
     const [showNewTaskModal, setShowNewTaskModal] = useState(false)
 
-    useEffect(() => {
-        getAllTasks()
-            .then(response => {
-                if (!response.ok) {
-                    throw response.error
-                }
-                return response.json()
-            })
-            .then(tasks => {
-                let newToDoList = [...toDoList, ...tasks];
-                setToDoList(newToDoList)
-            })
-            .catch(error => console.log(error))
+    
+    // useEffect(() => {
+    //     getAllTasks()
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw response.error
+    //             }
+    //             return response.json()
+    //         })
+    //         .then(tasks => {
+    //             let newToDoList = [...toDoList, ...tasks];
+    //             setToDoList(newToDoList)
+    //         })
+    //         .catch(error => console.log(error))
 
-    }, [])
+    // }, [])
+
+    useEffect(()=>{
+        if(data){
+            setToDoList(data)
+        }
+    }, data)
 
 
     function handleShowAddModal() {
@@ -110,7 +123,7 @@ export default function Todo() {
         handleEditTaskModal()
     }
 
-    function handleSaveEditedTask(taskObj){
+    function handleSaveEditedTask(taskObj) {
         let toDo = toDoList;
         console.log(taskObj)
         saveEditTask(taskObj)
@@ -141,7 +154,7 @@ export default function Todo() {
                 <button onClick={handleShowAddModal}>Add task</button>
             </div>
             <div className={styles.pageControls}>
-                {toDoList.length != 0?<button onClick={handleToggleShowCofirmModal}>Remove checked tasks</button>:null}
+                {toDoList.length != 0 ? <button onClick={handleToggleShowCofirmModal}>Remove checked tasks</button> : null}
             </div>
             {showNewTaskModal && <AddTaskModal
                 handleShowAddModal={handleShowAddModal}
@@ -149,7 +162,11 @@ export default function Todo() {
             />}
             <div className={styles.drawTodoList}>
                 {
-                    toDoList.map((todo => {
+                    isLoading && <h1>Loading...</h1>
+                }
+
+                {
+                    toDoList && toDoList.map((todo => {
                         return (
                             <div className={styles.singleTodo}
                                 key={todo.id}
