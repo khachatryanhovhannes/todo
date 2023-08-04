@@ -1,0 +1,17 @@
+.navBar{
+    width: 100%;
+    background-color:rgb(59, 59, 59);
+    padding: 10px;
+}
+
+.navBar a{
+    padding: 10px 40px;
+    display: inline-block;
+    text-decoration: none;
+    color: rgb(187, 187, 187);
+    border-right: 1px solid black;
+}
+
+.navBar a:hover{
+    color:white
+}

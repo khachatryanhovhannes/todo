@@ -1,11 +1,13 @@
 import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
-import { getSingleTask, removeSingleTask } from '../../../utils/API';
+import { getSingleTask, removeSingleTask, saveEditTask} from '../../../utils/API';
 import { useNavigate } from 'react-router-dom';
+import EditTaskModal from "../../modals/editTaskModal/EditTaskModal"
 import styles from "./SingleTask.module.css"
 
 export default function SingleTask() {
     const { id } = useParams();
+    const [showEditModal, setShowEditModal] = useState(false)
     const [taskData, setTaskData] = useState(null);
     const navigate = useNavigate();
 
@@ -39,18 +41,37 @@ export default function SingleTask() {
             })
             .then(navigate('/'))
             .catch(error => console.log(error))
+    }
 
-
+    function handleEditTaskModal() {
+        setShowEditModal(!showEditModal)
     }
 
 
+    function handleSaveEditedTask(taskObj){
+        saveEditTask(taskObj)
+            .then(response => {
+                if (!response.ok) {
+                    throw response.error
+                }
+                return response.json()
+            })
+            .then(task => {
+                setTaskData(task)
+                handleEditTaskModal()
+            })
+            .catch(error => console.log(error))
+    }
 
     return (
         <div className={styles.singleTaskBack}>
-            <input type="button" value="Back" onClick={(evt)=>{
-                evt.preventDefault()
-                navigate('/')
-            }}/>
+            <input type="button"
+                value="Back"
+                className={styles.backButton}
+                onClick={(evt) => {
+                    evt.preventDefault()
+                    navigate('/')
+                }} />
             {
                 taskData &&
                 <div className={styles.singleTask}>
@@ -59,13 +80,23 @@ export default function SingleTask() {
                     <h3>Importance - {taskData.importance}</h3>
                     <p>{taskData.description}</p>
                     <button
-                        onClick={()=>{
+                        className={styles.editButton}
+                        onClick={handleEditTaskModal}
+                    > Edit this task
+                    </button>
+                    <button
+                        className={styles.removeButton}
+                        onClick={() => {
                             handleRemoveSingleTask(taskData.id)
                         }}
                     >Remove this task</button>
                 </div>
             }
-
+            {showEditModal && <EditTaskModal
+                editTask={taskData}
+                handleEditTaskModal={handleEditTaskModal}
+                handleSaveEditedTask={handleSaveEditedTask}
+            />}
 
         </div>
     )

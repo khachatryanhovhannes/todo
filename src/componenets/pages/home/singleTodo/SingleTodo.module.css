@@ -15,6 +15,10 @@ h1{
     overflow: hidden;
 }
 
+p{
+    overflow: hidden;
+}
+
 .trash {
     padding: 13px;
     font-size: 20px;
