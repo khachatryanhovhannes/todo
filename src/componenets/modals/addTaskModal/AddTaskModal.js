@@ -31,6 +31,7 @@ export default function AddTaskModal({ handleShowAddModal }) {
     function handleAddTask(event) {
         event.preventDefault();
 
+        
         const { title, description, importance, developer } = newTaskObj;
         if (!title || !description || !importance || !developer) {
             return;

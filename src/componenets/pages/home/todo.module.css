@@ -8,11 +8,16 @@
     padding: 15px 60px;
     border: none;
     outline: none;
-    background-color: black;
+    background-color: rgb(41, 41, 41);
     color: rgb(202, 202, 202);
     border-radius: 30px;
     font-size: 20px;
     cursor: pointer;
+}
+
+.addButton button:hover{
+    background-color: black;
+    color:white
 }
 
 .pageControls{
@@ -55,3 +60,6 @@
     overflow: hidden;
 }
 
+button:disabled{
+    opacity: 0.5;
+}

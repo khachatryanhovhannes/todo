@@ -24,10 +24,13 @@ export default function SingleTodo({ todo, handleCheckedTasks, handleEditTask })
                     }}
                 />
             </div>
-            <h1><Link to={`/task/${todo.id}`}>{todo.title}</Link></h1>
-            <h2>{todo.developer}</h2>
-            <h3>{todo.importance}</h3>
-            <p>{todo.description}</p>
+            <Link
+                to={`/task/${todo.id}`}
+                className={styles.todoTitle}
+            >{todo.title}</Link>
+            <h2 className={styles.todoDev}>{todo.developer}</h2>
+            <h3 className={styles.todoImp}>Importance - {todo.importance}</h3>
+            <p className={styles.todoDesc}>{todo.description}</p>
             <div className={styles.controls}>
                 <button className={styles.trash}
                     onClick={() => {

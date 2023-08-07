@@ -7,14 +7,14 @@ export const apiSlice = createApi({
     reducerPath: 'getAllTasks',
     baseQuery: fetchBaseQuery({ baseUrl: `http://localhost:3004` }),
     endpoints: (builder) => ({
-        getAllTasks: builder.query({
+         վgetAllTasks: builder.query({
             query: () => ({
                 url: `/tasks`,
                 method: "GET"
             })
         }),
         deleteTask: builder.mutation({
-            query: ({ taskId }) => ({
+            query: (taskId ) => ({
                 url: `/tasks/${taskId}`,
                 method: 'DELETE',
             }),
@@ -29,8 +29,7 @@ export const apiSlice = createApi({
         updateTask: builder.mutation({
             query: ({id, ...taskObj}) => ({
                 url: `/tasks/${id}`,
-                method: "PATCH",
-                // method: "PUT",
+                method: "PUT",
                 body: taskObj,
             })
         })

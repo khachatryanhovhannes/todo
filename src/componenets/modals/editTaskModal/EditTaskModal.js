@@ -1,12 +1,14 @@
 import { useState } from "react"
 import styles from "./EditTaskModal.module.css"
 import { useUpdateTaskMutation } from "../../../redux/API/API"
+import { useDispatch } from "react-redux"
+import { editTask } from "../../../redux/reducer/reducer"
 
 
-export default function EditTaskModal({ editTask, handleEditTaskModal, handleSaveEditedTask }) {
-    const [sendEditTask, { isLoading: isUpdating }] = useUpdateTaskMutation()
-    
-    const [newTaskObj, setNewTaskObj] = useState(editTask)
+export default function EditTaskModal({ editTaskObj, handleEditTaskModal }) {
+    const [sendEditTask, isLoading] = useUpdateTaskMutation()
+    const dispatch = useDispatch()
+    const [newTaskObj, setNewTaskObj] = useState(editTaskObj)
 
     function handleInputChange(event) {
         setNewTaskObj({ ...newTaskObj, [event.target.name]: event.target.value })
@@ -23,12 +25,17 @@ export default function EditTaskModal({ editTask, handleEditTaskModal, handleSav
     function handleAddEditedTask(event) {
         event.preventDefault();
 
+        
         const { id, title, description, importance, developer } = newTaskObj;
         if (!title || !description || !importance || !developer) {
             return;
         }
-        sendEditTask({ id, newTaskObj })
-        handleEditTaskModal()
+        sendEditTask({id, title, description, importance, developer})
+            .then((res) => {
+                console.log(res)
+                dispatch(editTask({id, title, description, importance, developer}))
+                handleEditTaskModal()
+            })
     }
 
     function handleAddKeyDown(event) {

@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
-import { addTask, removeSingleTask, saveEditTask } from "../../../utils/API";
+import { saveEditTask } from "../../../utils/API";
 import AddTaskModal from "../../modals/addTaskModal/AddTaskModal";
 import styles from "./todo.module.css"
 import SingleTodo from "./singleTodo/SingleTodo";
 import RemoveCheckedTaskModal from "../../modals/removeCheckedTaskModal/RemoveCheckedTaskModal";
 import EditTaskModal from "../../modals/editTaskModal/EditTaskModal";
-import { useGetAllTasksQuery } from "../../../redux/API/API";
-import { useSelector , useDispatch} from "react-redux";
-import { getAllTasks } from "../../../redux/reducer/reducer";
-
+import { useDeleteTaskMutation, useGetAllTasksQuery } from "../../../redux/API/API";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllTasks, removeSingleTask } from "../../../redux/reducer/reducer";
 
 
 export default function Todo() {
     const dispatch = useDispatch()
-    const { data, error, isLoading } = useGetAllTasksQuery("GET")
-    const toDoList = useSelector((state)=>state.taskReducer.toDoList)
+    const { data, error, isLoading } = useGetAllTasksQuery()
+    const toDoList = useSelector((state) => state.taskReducer.toDoList)
+    const [deleteTask, result] = useDeleteTaskMutation()
 
 
     const [editTask, setEditTask] = useState(null)
@@ -23,22 +23,6 @@ export default function Todo() {
     const [toggleConfirmModal, setToggleConfirmModal] = useState(false)
     const [showNewTaskModal, setShowNewTaskModal] = useState(false)
 
-
-    // useEffect(() => {
-    //     getAllTasks()
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw response.error
-    //             }
-    //             return response.json()
-    //         })
-    //         .then(tasks => {
-    //             let newToDoList = [...toDoList, ...tasks];
-    //             setToDoList(newToDoList)
-    //         })
-    //         .catch(error => console.log(error))
-
-    // }, [])
 
     useEffect(() => {
         if (data) {
@@ -50,24 +34,6 @@ export default function Todo() {
     function handleShowAddModal() {
         setShowNewTaskModal(!showNewTaskModal)
     }
-
-    function handleSendAddTask(newTaskObj) {
-        // addTask(newTaskObj)
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw response.error
-        //         }
-        //         return response.json()
-        //     })
-        //     .then(task => {
-        //         let newToDoList = [...toDoList, task];
-        //         setToDoList(newToDoList)
-        //     })
-        //     .catch(error => console.log(error))
-
-    }
-
- 
 
     function handleCheckedTasks(taskID) {
         checkedTasks = new Set(checkedTasks)
@@ -82,18 +48,11 @@ export default function Todo() {
 
     function handleRemovedCheckedTasks() {
         checkedTasks.forEach(itemId => {
-            removeSingleTask(itemId)
-                .then(response => {
-                    if (!response.ok) {
-                        throw response.error
-                    }
-                    return response.json()
-                }).then(() => {
-                    toDoList = toDoList.filter(item => item.id !== itemId)
+            deleteTask(itemId)
+                .then(() => {
+                    dispatch(removeSingleTask(itemId))
                 })
         })
-        checkedTasks = checkedTasks.clear
-        setCheckedTasks(checkedTasks.clear)
         handleToggleShowCofirmModal()
     }
 
@@ -111,42 +70,22 @@ export default function Todo() {
         handleEditTaskModal()
     }
 
-    function handleSaveEditedTask(taskObj) {
-        let toDo = toDoList;
-        console.log(taskObj)
-        saveEditTask(taskObj)
-            .then(response => {
-                if (!response.ok) {
-                    throw response.error
-                }
-                return response.json()
-            })
-            .then(task => {
-                let index = toDo.findIndex((item) => item.id === taskObj.id);
-                toDo[index] = {
-                    ...toDo[index],
-                    ...taskObj
-                }
-                // setToDoList([...toDo])
-                setEditTask(null)
-                setShowEditTaskModal(false)
-                console.log(task)
-            })
-            .catch(error => console.log(error))
-    }
-
+   
 
     return (
         <>
             <div className={styles.addButton}>
-                <button onClick={handleShowAddModal}>Add task</button>
+                <button onClick={handleShowAddModal}
+                    disabled={checkedTasks.size}
+                >Add task</button>
             </div>
             <div className={styles.pageControls}>
-                { <button onClick={handleToggleShowCofirmModal}>Remove checked tasks</button> }
+                {<button onClick={handleToggleShowCofirmModal}
+                    disabled={!checkedTasks.size}
+                >Remove checked tasks</button>}
             </div>
             {showNewTaskModal && <AddTaskModal
                 handleShowAddModal={handleShowAddModal}
-                // handleSendAddTask={handleSendAddTask}
             />}
             <div className={styles.drawTodoList}>
                 {
@@ -160,7 +99,6 @@ export default function Todo() {
                                 key={todo.id}
                                 style={todo.importance === "High" ? { backgroundColor: "rgb(255, 112, 112)" } : todo.importance === "Medium" ? { backgroundColor: "rgb(209, 112, 255)" } : { backgroundColor: "rgb(112, 203, 255)" }}>
                                 <SingleTodo todo={todo}
-                                    // handleRemoveSingleTask={handleRemoveSingleTask}
                                     handleCheckedTasks={handleCheckedTasks}
                                     handleEditTask={handleEditTask}
                                 />
@@ -175,9 +113,8 @@ export default function Todo() {
                 handleToggleShowCofirmModal={handleToggleShowCofirmModal}
             />}
             {showEditTaskModal && <EditTaskModal
-                editTask={editTask}
+                editTaskObj={editTask}
                 handleEditTaskModal={handleEditTaskModal}
-                handleSaveEditedTask={handleSaveEditedTask}
             />}
         </>
     )

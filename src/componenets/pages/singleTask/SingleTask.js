@@ -1,6 +1,5 @@
 import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
-import { saveEditTask } from '../../../utils/API';
 import { useNavigate } from 'react-router-dom';
 import EditTaskModal from "../../modals/editTaskModal/EditTaskModal"
 import styles from "./SingleTask.module.css"
@@ -11,41 +10,23 @@ import { useDeleteTaskMutation } from '../../../redux/API/API';
 export default function SingleTask() {
     const { id } = useParams();
     const dispatch = useDispatch()
-    const taskData =  useSelector((state)=>{
-        return state.taskReducer.toDoList.find((item)=>item.id == id)
+    const taskData = useSelector((state) => {
+        return state.taskReducer.toDoList.find((item) => item.id == id)
     })
     const [deleteTask, result] = useDeleteTaskMutation()
-
     const [showEditModal, setShowEditModal] = useState(false)
     const navigate = useNavigate();
 
-
     function handleRemoveSingleTask(taskId) {
-        deleteTask({ taskId })
-        .then(() => {
-            dispatch(removeSingleTask(taskId))
-            navigate('/')
-        })
+        deleteTask(taskId)
+            .then(() => {
+                dispatch(removeSingleTask(taskId))
+                navigate('/')
+            })
     }
 
     function handleEditTaskModal() {
         setShowEditModal(!showEditModal)
-    }
-
-
-    function handleSaveEditedTask(taskObj) {
-        saveEditTask(taskObj)
-            .then(response => {
-                if (!response.ok) {
-                    throw response.error
-                }
-                return response.json()
-            })
-            .then(task => {
-                // setTaskData(task)
-                handleEditTaskModal()
-            })
-            .catch(error => console.log(error))
     }
 
     return (
@@ -77,12 +58,10 @@ export default function SingleTask() {
                     >Remove this task</button>
                 </div>
             }
-            {showEditModal && <EditTaskModal
-                editTask={taskData}
-                handleEditTaskModal={handleEditTaskModal}
-                handleSaveEditedTask={handleSaveEditedTask}
-            />}
-
+            {
+                showEditModal && <EditTaskModal
+                    editTaskObj={taskData}
+                />}
         </div>
     )
 }
