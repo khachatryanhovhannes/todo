@@ -1,8 +1,14 @@
 import { useState } from "react"
 import styles from "./AddTaskModal.module.css"
+import { useAddTaskMutation } from "../../../redux/API/API"
+import { addTask } from "../../../redux/reducer/reducer"
+import { useDispatch } from "react-redux"
+
+export default function AddTaskModal({ handleShowAddModal }) {
+    const [sendTaskData, result] = useAddTaskMutation()
+    const dispatch = useDispatch()
 
 
-export default function AddTaskModal({ handleShowAddModal, handleSendAddTask }) {
     const [newTaskObj, setNewTaskObj] = useState({
         title: null,
         description: null,
@@ -29,8 +35,11 @@ export default function AddTaskModal({ handleShowAddModal, handleSendAddTask }) 
         if (!title || !description || !importance || !developer) {
             return;
         }
-        handleSendAddTask(newTaskObj);
-        handleShowAddModal()
+        sendTaskData(newTaskObj)
+            .then(() => {
+                dispatch(addTask(newTaskObj))
+                handleShowAddModal()
+            })
     }
 
     function handleAddKeyDown(event) {
@@ -42,7 +51,7 @@ export default function AddTaskModal({ handleShowAddModal, handleSendAddTask }) 
 
     return (
         <div className={styles.addTaskModalBack} onClick={handleShowAddModal}>
-            <form onKeyDown={handleAddKeyDown} onClick={(evt)=>{
+            <form onKeyDown={handleAddKeyDown} onClick={(evt) => {
                 evt.stopPropagation()
             }}>
                 <div className={styles.formHeader}>
@@ -67,6 +76,7 @@ export default function AddTaskModal({ handleShowAddModal, handleSendAddTask }) 
                 <div className={styles.labelInput}>
                     <label>Developer</label>
                     <select onChange={handleSelectChange}>
+                        <option value="">Select developer</option>
                         <option value="Micky Mouse">Micky Mouse</option>
                         <option value="Spider Man">Spider Man</option>
                         <option value="Tom and Jerry">Tom and Jerry</option>

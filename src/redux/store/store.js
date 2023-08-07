@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { getAllTasks } from '../API/API'
+import { apiSlice } from '../API/API'
+import taskReducer from '../reducer/reducer'
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    [getAllTasks.reducerPath]: getAllTasks.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    taskReducer: taskReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(getAllTasks.middleware),
+    getDefaultMiddleware().concat(apiSlice.middleware),
 })
 
-setupListeners(store.dispatch)
+export {store}

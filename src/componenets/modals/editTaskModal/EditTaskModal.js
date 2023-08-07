@@ -1,8 +1,11 @@
 import { useState } from "react"
 import styles from "./EditTaskModal.module.css"
+import { useUpdateTaskMutation } from "../../../redux/API/API"
 
 
-export default function EditTaskModal({editTask, handleEditTaskModal, handleSaveEditedTask}) {
+export default function EditTaskModal({ editTask, handleEditTaskModal, handleSaveEditedTask }) {
+    const [sendEditTask, { isLoading: isUpdating }] = useUpdateTaskMutation()
+    
     const [newTaskObj, setNewTaskObj] = useState(editTask)
 
     function handleInputChange(event) {
@@ -17,28 +20,20 @@ export default function EditTaskModal({editTask, handleEditTaskModal, handleSave
         setNewTaskObj({ ...newTaskObj, importance: event.target.title })
     }
 
-    function andleAddEditedTask (event){
+    function handleAddEditedTask(event) {
         event.preventDefault();
 
-        const { id,title, description, importance, developer } = newTaskObj;
+        const { id, title, description, importance, developer } = newTaskObj;
         if (!title || !description || !importance || !developer) {
             return;
         }
-
-        let neweObj = {
-            id: id,
-            title,
-            description,
-            importance,
-            developer,
-        }
-
-        handleSaveEditedTask(neweObj)
+        sendEditTask({ id, newTaskObj })
+        handleEditTaskModal()
     }
 
     function handleAddKeyDown(event) {
         if (event.key === "Enter") {
-            andleAddEditedTask(event)
+            handleAddEditedTask(event)
         }
 
     }
@@ -85,7 +80,7 @@ export default function EditTaskModal({editTask, handleEditTaskModal, handleSave
                                 name="radios"
                                 title="Low"
                                 onChange={handleRadioChange}
-                                checked = {newTaskObj.importance==="Low"?true:false}
+                                checked={newTaskObj.importance === "Low" ? true : false}
                             />
                             Low
                         </label>
@@ -95,7 +90,7 @@ export default function EditTaskModal({editTask, handleEditTaskModal, handleSave
                                 name="radios"
                                 title="Medium"
                                 onChange={handleRadioChange}
-                                checked = {newTaskObj.importance==="Medium"?true:false}
+                                checked={newTaskObj.importance === "Medium" ? true : false}
                             />
                             Medium
                         </label>
@@ -106,14 +101,14 @@ export default function EditTaskModal({editTask, handleEditTaskModal, handleSave
                                 name="radios"
                                 title="High"
                                 onChange={handleRadioChange}
-                                checked = {newTaskObj.importance==="High"?true:false}
+                                checked={newTaskObj.importance === "High" ? true : false}
                             />
                             High
                         </label>
                     </div>
                 </div>
                 <div className={styles.buttons}>
-                    <input type="submit" value="Edit" onClick={andleAddEditedTask} />
+                    <input type="submit" value="Edit" onClick={handleAddEditedTask} />
                     <button onClick={handleEditTaskModal}>Cancel</button>
                 </div>
             </form>

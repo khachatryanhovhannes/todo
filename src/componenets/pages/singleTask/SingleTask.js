@@ -1,46 +1,31 @@
 import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
-import { getSingleTask, removeSingleTask, saveEditTask} from '../../../utils/API';
+import { saveEditTask } from '../../../utils/API';
 import { useNavigate } from 'react-router-dom';
 import EditTaskModal from "../../modals/editTaskModal/EditTaskModal"
 import styles from "./SingleTask.module.css"
+import { useDispatch, useSelector } from 'react-redux';
+import { removeSingleTask } from '../../../redux/reducer/reducer';
+import { useDeleteTaskMutation } from '../../../redux/API/API';
 
 export default function SingleTask() {
     const { id } = useParams();
+    const dispatch = useDispatch()
+    const taskData =  useSelector((state)=>{
+        return state.taskReducer.toDoList.find((item)=>item.id == id)
+    })
+    const [deleteTask, result] = useDeleteTaskMutation()
+
     const [showEditModal, setShowEditModal] = useState(false)
-    const [taskData, setTaskData] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        getSingleTask(id)
-            .then(response => {
-                if (!response.ok) {
-                    throw response.error
-                }
-                return response.json()
-            })
-            .then(task => {
-                console.log('DDDDDD====>>>>', task);
-
-                setTaskData({
-                    ...taskData,
-                    ...task
-                })
-
-            })
-            .catch(error => console.log(error))
-    }, [])
 
     function handleRemoveSingleTask(taskId) {
-        removeSingleTask(taskId)
-            .then(response => {
-                if (!response.ok) {
-                    throw response.error
-                }
-                return response.json()
-            })
-            .then(navigate('/'))
-            .catch(error => console.log(error))
+        deleteTask({ taskId })
+        .then(() => {
+            dispatch(removeSingleTask(taskId))
+            navigate('/')
+        })
     }
 
     function handleEditTaskModal() {
@@ -48,7 +33,7 @@ export default function SingleTask() {
     }
 
 
-    function handleSaveEditedTask(taskObj){
+    function handleSaveEditedTask(taskObj) {
         saveEditTask(taskObj)
             .then(response => {
                 if (!response.ok) {
@@ -57,7 +42,7 @@ export default function SingleTask() {
                 return response.json()
             })
             .then(task => {
-                setTaskData(task)
+                // setTaskData(task)
                 handleEditTaskModal()
             })
             .catch(error => console.log(error))
