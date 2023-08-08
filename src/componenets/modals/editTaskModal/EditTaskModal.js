@@ -1,15 +1,20 @@
 import { useState } from "react"
 import styles from "./EditTaskModal.module.css"
 import { useUpdateTaskMutation } from "../../../redux/API/API"
-import { useDispatch } from "react-redux"
-import { editTask } from "../../../redux/reducer/reducer"
+import { useDispatch, useSelector } from "react-redux"
+import { editTask , getTaskInfoInEditModal} from "../../../redux/reducer/reducer"
 
 
-export default function EditTaskModal({ editTaskObj, handleEditTaskModal }) {
+export default function EditTaskModal() {
     const [sendEditTask, isLoading] = useUpdateTaskMutation()
     const dispatch = useDispatch()
+    const editTaskObj = useSelector((state)=>state.taskReducer.editTaskObj)
     const [newTaskObj, setNewTaskObj] = useState(editTaskObj)
-
+    
+    function handleAddEditedTaskModal(){
+        dispatch(getTaskInfoInEditModal({}))
+    }
+    
     function handleInputChange(event) {
         setNewTaskObj({ ...newTaskObj, [event.target.name]: event.target.value })
     }
@@ -34,7 +39,7 @@ export default function EditTaskModal({ editTaskObj, handleEditTaskModal }) {
             .then((res) => {
                 console.log(res)
                 dispatch(editTask({id, title, description, importance, developer}))
-                handleEditTaskModal()
+                handleAddEditedTaskModal()
             })
     }
 
@@ -46,13 +51,13 @@ export default function EditTaskModal({ editTaskObj, handleEditTaskModal }) {
     }
 
     return (
-        <div className={styles.addTaskModalBack} onClick={handleEditTaskModal}>
+        <div className={styles.addTaskModalBack} onClick={handleAddEditedTaskModal}>
             <form onKeyDown={handleAddKeyDown} onClick={(evt) => {
                 evt.stopPropagation()
             }}>
                 <div className={styles.formHeader}>
                     <h3>EDIT TASK</h3>
-                    <button onClick={handleEditTaskModal}>&#10005;</button>
+                    <button onClick={handleAddEditedTaskModal}>&#10005;</button>
                 </div>
                 <div className={styles.labelInput}>
                     <label>Title</label>
@@ -116,7 +121,7 @@ export default function EditTaskModal({ editTaskObj, handleEditTaskModal }) {
                 </div>
                 <div className={styles.buttons}>
                     <input type="submit" value="Edit" onClick={handleAddEditedTask} />
-                    <button onClick={handleEditTaskModal}>Cancel</button>
+                    <button onClick={handleAddEditedTaskModal}>Cancel</button>
                 </div>
             </form>
         </div>

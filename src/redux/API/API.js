@@ -7,7 +7,7 @@ export const apiSlice = createApi({
     reducerPath: 'getAllTasks',
     baseQuery: fetchBaseQuery({ baseUrl: `http://localhost:3004` }),
     endpoints: (builder) => ({
-         վgetAllTasks: builder.query({
+        getAllTasks: builder.query({
             query: () => ({
                 url: `/tasks`,
                 method: "GET"

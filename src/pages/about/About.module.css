@@ -1,0 +1,39 @@
+.aboutBack{
+    min-height: 100vh;
+    max-height: 100%;
+    background-color: lavender;
+    border: 1px solid transparent;
+}
+
+.about{
+    width: 80%;
+    min-height: 80vh;
+    margin: 20px auto;
+    text-align: center;
+    background-color: rgb(187, 187, 187);
+    border-radius: 30px;
+    padding: 20px 30px 50px;
+}
+
+.about h1{
+    font-weight: 300;
+    font-size: 50px;
+    white-space:normal;
+}
+
+.backButton{
+    display: inline-block;
+    margin: 5px 50px    ;
+    padding: 10px 25px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+    color: rgb(219, 219, 219);
+    background-color: rgb(104, 104, 104);
+}
+
+.backButton:hover{
+    color: rgb(253, 253, 253);
+    background-color: rgb(63, 63, 63);
+}

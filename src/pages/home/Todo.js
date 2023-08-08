@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { saveEditTask } from "../../../utils/API";
-import AddTaskModal from "../../modals/addTaskModal/AddTaskModal";
+import AddTaskModal from "../../componenets/modals/addTaskModal/AddTaskModal";
 import styles from "./todo.module.css"
 import SingleTodo from "./singleTodo/SingleTodo";
-import RemoveCheckedTaskModal from "../../modals/removeCheckedTaskModal/RemoveCheckedTaskModal";
-import EditTaskModal from "../../modals/editTaskModal/EditTaskModal";
-import { useDeleteTaskMutation, useGetAllTasksQuery } from "../../../redux/API/API";
+import RemoveCheckedTaskModal from "../../componenets/modals/removeCheckedTaskModal/RemoveCheckedTaskModal";
+import EditTaskModal from "../../componenets/modals/editTaskModal/EditTaskModal";
+import { useDeleteTaskMutation, useGetAllTasksQuery } from "../../redux/API/API";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllTasks, removeSingleTask } from "../../../redux/reducer/reducer";
+import { getAllTasks, removeSingleTask, changeCheckedTasks } from "../../redux/reducer/reducer";
 
 
 export default function Todo() {
@@ -15,11 +14,12 @@ export default function Todo() {
     const { data, error, isLoading } = useGetAllTasksQuery()
     const toDoList = useSelector((state) => state.taskReducer.toDoList)
     const [deleteTask, result] = useDeleteTaskMutation()
+    const editTaskObj = useSelector((state)=>state.taskReducer.editTaskObj)
+    const checkedTasks = useSelector((state)=>state.taskReducer.checkedTasks)
 
 
-    const [editTask, setEditTask] = useState(null)
-    const [showEditTaskModal, setShowEditTaskModal] = useState(false)
-    let [checkedTasks, setCheckedTasks] = useState(new Set())
+
+    // let [checkedTasks, setCheckedTasks] = useState(new Set())
     const [toggleConfirmModal, setToggleConfirmModal] = useState(false)
     const [showNewTaskModal, setShowNewTaskModal] = useState(false)
 
@@ -36,13 +36,7 @@ export default function Todo() {
     }
 
     function handleCheckedTasks(taskID) {
-        checkedTasks = new Set(checkedTasks)
-        if (checkedTasks.has(taskID)) {
-            checkedTasks.delete(taskID);
-        } else {
-            checkedTasks.add(taskID);
-        }
-        setCheckedTasks(checkedTasks)
+        dispatch(changeCheckedTasks(taskID))
         console.log(checkedTasks)
     }
 
@@ -59,18 +53,6 @@ export default function Todo() {
     function handleToggleShowCofirmModal() {
         setToggleConfirmModal(!toggleConfirmModal)
     }
-
-
-    function handleEditTaskModal() {
-        setShowEditTaskModal(!showEditTaskModal)
-    }
-
-    function handleEditTask(taskObj) {
-        setEditTask(taskObj)
-        handleEditTaskModal()
-    }
-
-   
 
     return (
         <>
@@ -100,7 +82,6 @@ export default function Todo() {
                                 style={todo.importance === "High" ? { backgroundColor: "rgb(255, 112, 112)" } : todo.importance === "Medium" ? { backgroundColor: "rgb(209, 112, 255)" } : { backgroundColor: "rgb(112, 203, 255)" }}>
                                 <SingleTodo todo={todo}
                                     handleCheckedTasks={handleCheckedTasks}
-                                    handleEditTask={handleEditTask}
                                 />
                             </div>
                         )
@@ -112,10 +93,7 @@ export default function Todo() {
                 handleRemovedCheckedTasks={handleRemovedCheckedTasks}
                 handleToggleShowCofirmModal={handleToggleShowCofirmModal}
             />}
-            {showEditTaskModal && <EditTaskModal
-                editTaskObj={editTask}
-                handleEditTaskModal={handleEditTaskModal}
-            />}
+            {Object.keys(editTaskObj).length  && <EditTaskModal/>}
         </>
     )
 }

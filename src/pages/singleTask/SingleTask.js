@@ -1,11 +1,11 @@
 import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import EditTaskModal from "../../modals/editTaskModal/EditTaskModal"
+import EditTaskModal from "../../componenets/modals/editTaskModal/EditTaskModal"
 import styles from "./SingleTask.module.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { removeSingleTask } from '../../../redux/reducer/reducer';
-import { useDeleteTaskMutation } from '../../../redux/API/API';
+import { removeSingleTask } from '../../redux/reducer/reducer';
+import { useDeleteTaskMutation } from '../../redux/API/API';
 
 export default function SingleTask() {
     const { id } = useParams();

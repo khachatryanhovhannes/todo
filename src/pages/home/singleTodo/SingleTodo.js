@@ -1,13 +1,17 @@
 import styles from "./SingleTodo.module.css"
 import { FaTrash, FaEdit } from 'react-icons/fa'
 import { Link } from 'react-router-dom';
-import { useDeleteTaskMutation } from "../../../../redux/API/API";
-import { removeSingleTask } from "../../../../redux/reducer/reducer";
+import { useDeleteTaskMutation } from "../../../redux/API/API";
+import { removeSingleTask, getTaskInfoInEditModal } from "../../../redux/reducer/reducer";
 import { useDispatch } from "react-redux";
 
-export default function SingleTodo({ todo, handleCheckedTasks, handleEditTask }) {
+export default function SingleTodo({ todo, handleCheckedTasks }) {
     const dispatch = useDispatch()
     const [deleteTask, result] = useDeleteTaskMutation()
+
+    function handleEditTask(){
+        dispatch(getTaskInfoInEditModal(todo))
+    }
 
 
     function handleRemoveSingleTask(taskId) {
