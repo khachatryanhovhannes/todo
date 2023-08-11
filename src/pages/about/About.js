@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './About.module.css'
 
-
-
 export default function About() {
 
     const navigate = useNavigate();
-
+    
     return (
         <>
             <div className={styles.aboutBack}>

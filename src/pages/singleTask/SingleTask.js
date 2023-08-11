@@ -1,11 +1,12 @@
 import { useParams } from 'react-router';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EditTaskModal from "../../componenets/modals/editTaskModal/EditTaskModal"
 import styles from "./SingleTask.module.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { removeSingleTask } from '../../redux/reducer/reducer';
 import { useDeleteTaskMutation } from '../../redux/API/API';
+import { showErrorMessage, showSuccesMessage } from '../../componenets/Toastify/Toastify';
 
 export default function SingleTask() {
     const { id } = useParams();
@@ -16,12 +17,16 @@ export default function SingleTask() {
     const [deleteTask, result] = useDeleteTaskMutation()
     const [showEditModal, setShowEditModal] = useState(false)
     const navigate = useNavigate();
-
+  
     function handleRemoveSingleTask(taskId) {
         deleteTask(taskId)
             .then(() => {
                 dispatch(removeSingleTask(taskId))
+                showSuccesMessage()
                 navigate('/')
+            })
+            .catch(()=>{
+                showErrorMessage()
             })
     }
 
@@ -31,16 +36,19 @@ export default function SingleTask() {
 
     return (
         <div className={styles.singleTaskBack}>
-            <input type="button"
-                value="Back"
-                className={styles.backButton}
-                onClick={(evt) => {
-                    evt.preventDefault()
-                    navigate('/')
-                }} />
             {
                 taskData &&
                 <div className={styles.singleTask}>
+                    <div>
+                        <input type="button"
+                            value="Back"
+                            className={styles.backButton}
+                            onClick={(evt) => {
+                                evt.preventDefault()
+                                navigate('/')
+                            }} />
+                    </div>
+
                     <h1>{taskData.title}</h1>
                     <h2>Developer - {taskData.developer}</h2>
                     <h3>Importance - {taskData.importance}</h3>

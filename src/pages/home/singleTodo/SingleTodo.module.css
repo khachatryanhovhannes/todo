@@ -66,3 +66,9 @@ p{
 .todoImp{
     font-weight: 300;
 }
+
+
+.singleTodo:hover .todoTitle{
+    text-decoration: underline;
+
+}

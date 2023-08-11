@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import styles from "./EditTaskModal.module.css"
 import { useUpdateTaskMutation } from "../../../redux/API/API"
 import { useDispatch, useSelector } from "react-redux"
 import { editTask , getTaskInfoInEditModal} from "../../../redux/reducer/reducer"
+import { showErrorMessage, showSuccesMessage } from "../../Toastify/Toastify"
 
 
 export default function EditTaskModal() {
@@ -10,7 +11,17 @@ export default function EditTaskModal() {
     const dispatch = useDispatch()
     const editTaskObj = useSelector((state)=>state.taskReducer.editTaskObj)
     const [newTaskObj, setNewTaskObj] = useState(editTaskObj)
-    
+    const inputRef = useRef("")
+
+    useEffect(()=>{
+        handleInputFocus()
+    }, [])
+
+
+    function handleInputFocus() {
+        inputRef.current.focus()
+    }
+
     function handleAddEditedTaskModal(){
         dispatch(getTaskInfoInEditModal({}))
     }
@@ -40,6 +51,10 @@ export default function EditTaskModal() {
                 console.log(res)
                 dispatch(editTask({id, title, description, importance, developer}))
                 handleAddEditedTaskModal()
+                showSuccesMessage()
+            })
+            .catch(()=>{
+                showErrorMessage()
             })
     }
 
@@ -66,6 +81,7 @@ export default function EditTaskModal() {
                         name="title"
                         value={newTaskObj.title}
                         onChange={handleInputChange}
+                        ref={inputRef}
                     />
                 </div>
                 <div className={styles.labelInput}>

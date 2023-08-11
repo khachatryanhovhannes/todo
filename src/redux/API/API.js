@@ -13,6 +13,12 @@ export const apiSlice = createApi({
                 method: "GET"
             })
         }),
+        getSingleTask: builder.query({
+            query: (taskId) => ({
+                url: `/tasks/${taskId}`,
+                method: "GET"
+            })
+        }),
         deleteTask: builder.mutation({
             query: (taskId ) => ({
                 url: `/tasks/${taskId}`,
@@ -38,5 +44,5 @@ export const apiSlice = createApi({
 
 
 
-export const { useGetAllTasksQuery, useDeleteTaskMutation, useAddTaskMutation, useUpdateTaskMutation } = apiSlice
+export const { useGetAllTasksQuery, useDeleteTaskMutation, useAddTaskMutation, useUpdateTaskMutation, useGetSingleTaskQuery } = apiSlice
 

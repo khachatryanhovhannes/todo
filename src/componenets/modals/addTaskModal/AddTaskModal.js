@@ -1,12 +1,18 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import styles from "./AddTaskModal.module.css"
 import { useAddTaskMutation } from "../../../redux/API/API"
 import { addTask } from "../../../redux/reducer/reducer"
 import { useDispatch } from "react-redux"
+import { showErrorMessage, showSuccesMessage } from "../../Toastify/Toastify"
+
 
 export default function AddTaskModal({ handleShowAddModal }) {
     const [sendTaskData, result] = useAddTaskMutation()
     const dispatch = useDispatch()
+    const inputRef = useRef("")
+
+
+
 
 
     const [newTaskObj, setNewTaskObj] = useState({
@@ -15,6 +21,16 @@ export default function AddTaskModal({ handleShowAddModal }) {
         importance: null,
         developer: null
     })
+
+
+    useEffect(() => {
+        handleInputFocus()
+    }, [])
+
+
+    function handleInputFocus() {
+        inputRef.current.focus()
+    }
 
     function handleInputChange(event) {
         setNewTaskObj({ ...newTaskObj, [event.target.name]: event.target.value })
@@ -31,15 +47,20 @@ export default function AddTaskModal({ handleShowAddModal }) {
     function handleAddTask(event) {
         event.preventDefault();
 
-        
+
         const { title, description, importance, developer } = newTaskObj;
         if (!title || !description || !importance || !developer) {
             return;
         }
         sendTaskData(newTaskObj)
-            .then(() => {
-                dispatch(addTask(newTaskObj))
+            .then((taskObj) => {
+                console.log(taskObj)
+                dispatch(addTask(taskObj.data))
                 handleShowAddModal()
+                showSuccesMessage()
+            })
+            .catch(()=>{
+                showErrorMessage()
             })
     }
 
@@ -51,10 +72,12 @@ export default function AddTaskModal({ handleShowAddModal }) {
     }
 
     return (
-        <div className={styles.addTaskModalBack} onClick={handleShowAddModal}>
-            <form onKeyDown={handleAddKeyDown} onClick={(evt) => {
-                evt.stopPropagation()
-            }}>
+        <div className={styles.addTaskModalBack}
+            onClick={handleShowAddModal}>
+            <form onKeyDown={handleAddKeyDown}
+                onClick={(evt) => {
+                    evt.stopPropagation()
+                }}>
                 <div className={styles.formHeader}>
                     <h3>ADD NEW TASK</h3>
                     <button onClick={handleShowAddModal}>&#10005;</button>
@@ -65,6 +88,7 @@ export default function AddTaskModal({ handleShowAddModal }) {
                         placeholder="Title"
                         name="title"
                         onChange={handleInputChange}
+                        ref={inputRef}
                     />
                 </div>
                 <div className={styles.labelInput}>
@@ -117,7 +141,12 @@ export default function AddTaskModal({ handleShowAddModal }) {
                 </div>
                 <div className={styles.buttons}>
                     <input type="submit" value="Add" onClick={handleAddTask} />
-                    <button onClick={handleShowAddModal}>Cancel</button>
+                    <button onClick={(ect) => {
+                        handleShowAddModal()
+                    }}>Cancel</button>
+
+                    <div>
+                    </div>
                 </div>
             </form>
         </div>

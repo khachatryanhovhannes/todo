@@ -4,6 +4,7 @@
     justify-content: center;
 }
 
+
 .addButton button{
     padding: 15px 60px;
     border: none;
@@ -25,6 +26,8 @@
     justify-content: left;
     align-items: center;
     padding: 20px 60px;
+    position: sticky;
+    top:0
 }
 
 .pageControls>button:first-child{

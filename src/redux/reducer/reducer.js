@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { enableMapSet } from 'immer';
 
-enableMapSet();
 
 const initialState = {
     toDoList: [],
     editTaskObj: {},
-    checkedTasks: new Set()
+    checkedTasks: [],
 }
+
 
 const taskSlice = createSlice({
     name: "tasks",
@@ -29,17 +28,21 @@ const taskSlice = createSlice({
             state.editTaskObj = action.payload
         },
         changeCheckedTasks(state, action) {
-            const taskID = action.payload
-            // if (state.checkedTasks.has(taskID)) {
-                // state.checkedTasks = state.checkedTasks.delete(taskID);
-                // console.log(state.checkedTasks)
-            // } 
-            // else {
-            //     state.checkedTasks = state.checkedTasks.add(taskID);
-            // }
-        }
+            const taskId = action.payload
+            if (state.checkedTasks.find(id => id == taskId)) {
+                const itemIndex = state.checkedTasks.findIndex(id => id == taskId)
+                state.checkedTasks.splice(itemIndex, 1)
+            }
+            else {
+                state.checkedTasks = [...state.checkedTasks, taskId]
+            }
+        },
+        clearCheckedTasks(state){
+            state.checkedTasks = []
+        },
     },
 })
 
-export const { getAllTasks, removeSingleTask, addTask, editTask, getTaskInfoInEditModal, changeCheckedTasks } = taskSlice.actions;
+export const { getAllTasks, removeSingleTask, addTask, editTask, getTaskInfoInEditModal, changeCheckedTasks, clearCheckedTasks } = taskSlice.actions;
 export default taskSlice.reducer;
+

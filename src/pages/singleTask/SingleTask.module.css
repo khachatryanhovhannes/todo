@@ -64,6 +64,10 @@
 
 }
 
+.singleTask>div:first-child{
+    text-align: left;
+}
+
 
 .backButton{
     display: inline-block;

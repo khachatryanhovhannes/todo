@@ -6,7 +6,8 @@ import RemoveCheckedTaskModal from "../../componenets/modals/removeCheckedTaskMo
 import EditTaskModal from "../../componenets/modals/editTaskModal/EditTaskModal";
 import { useDeleteTaskMutation, useGetAllTasksQuery } from "../../redux/API/API";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllTasks, removeSingleTask, changeCheckedTasks } from "../../redux/reducer/reducer";
+import { getAllTasks, removeSingleTask, clearCheckedTasks } from "../../redux/reducer/reducer";
+import { showSuccesMessage, showErrorMessage } from "../../componenets/Toastify/Toastify";
 
 
 export default function Todo() {
@@ -14,14 +15,12 @@ export default function Todo() {
     const { data, error, isLoading } = useGetAllTasksQuery()
     const toDoList = useSelector((state) => state.taskReducer.toDoList)
     const [deleteTask, result] = useDeleteTaskMutation()
-    const editTaskObj = useSelector((state)=>state.taskReducer.editTaskObj)
-    const checkedTasks = useSelector((state)=>state.taskReducer.checkedTasks)
-
-
-
-    // let [checkedTasks, setCheckedTasks] = useState(new Set())
+    const editTaskObj = useSelector((state) => state.taskReducer.editTaskObj)
+    const checkedTasks = useSelector((state) => state.taskReducer.checkedTasks)
     const [toggleConfirmModal, setToggleConfirmModal] = useState(false)
     const [showNewTaskModal, setShowNewTaskModal] = useState(false)
+
+
 
 
     useEffect(() => {
@@ -35,10 +34,6 @@ export default function Todo() {
         setShowNewTaskModal(!showNewTaskModal)
     }
 
-    function handleCheckedTasks(taskID) {
-        dispatch(changeCheckedTasks(taskID))
-        console.log(checkedTasks)
-    }
 
     function handleRemovedCheckedTasks() {
         checkedTasks.forEach(itemId => {
@@ -46,8 +41,13 @@ export default function Todo() {
                 .then(() => {
                     dispatch(removeSingleTask(itemId))
                 })
+                .catch(()=> {
+                    showErrorMessage()
+                })
         })
+        showSuccesMessage()
         handleToggleShowCofirmModal()
+        dispatch(clearCheckedTasks())
     }
 
     function handleToggleShowCofirmModal() {
@@ -58,12 +58,12 @@ export default function Todo() {
         <>
             <div className={styles.addButton}>
                 <button onClick={handleShowAddModal}
-                    disabled={checkedTasks.size}
+                    disabled={checkedTasks.length}
                 >Add task</button>
             </div>
             <div className={styles.pageControls}>
                 {<button onClick={handleToggleShowCofirmModal}
-                    disabled={!checkedTasks.size}
+                    disabled={!checkedTasks.length}
                 >Remove checked tasks</button>}
             </div>
             {showNewTaskModal && <AddTaskModal
@@ -79,21 +79,19 @@ export default function Todo() {
                         return (
                             <div className={styles.singleTodo}
                                 key={todo.id}
-                                style={todo.importance === "High" ? { backgroundColor: "rgb(255, 112, 112)" } : todo.importance === "Medium" ? { backgroundColor: "rgb(209, 112, 255)" } : { backgroundColor: "rgb(112, 203, 255)" }}>
-                                <SingleTodo todo={todo}
-                                    handleCheckedTasks={handleCheckedTasks}
-                                />
+                                style={todo.importance === "High" ? { backgroundColor: "rgb(255 181 181)" } : todo.importance === "Medium" ? { backgroundColor: "rgb(232 185 255)" } : { backgroundColor: "rgb(197 234 255)" }}>
+                                <SingleTodo todo={todo} />
                             </div>
                         )
                     }))
                 }
             </div>
             {toggleConfirmModal && <RemoveCheckedTaskModal
-                count={checkedTasks.size}
+                count={checkedTasks.length}
                 handleRemovedCheckedTasks={handleRemovedCheckedTasks}
                 handleToggleShowCofirmModal={handleToggleShowCofirmModal}
             />}
-            {Object.keys(editTaskObj).length  && <EditTaskModal/>}
+            {Object.keys(editTaskObj).length && <EditTaskModal />}
         </>
     )
 }

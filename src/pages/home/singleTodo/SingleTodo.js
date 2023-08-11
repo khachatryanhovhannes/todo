@@ -2,25 +2,39 @@ import styles from "./SingleTodo.module.css"
 import { FaTrash, FaEdit } from 'react-icons/fa'
 import { Link } from 'react-router-dom';
 import { useDeleteTaskMutation } from "../../../redux/API/API";
-import { removeSingleTask, getTaskInfoInEditModal } from "../../../redux/reducer/reducer";
+import { removeSingleTask, getTaskInfoInEditModal, changeCheckedTasks } from "../../../redux/reducer/reducer";
 import { useDispatch } from "react-redux";
+import { showSuccesMessage, showErrorMessage } from "../../../componenets/Toastify/Toastify";
 
-export default function SingleTodo({ todo, handleCheckedTasks }) {
+
+
+export default function SingleTodo({ todo }) {
     const dispatch = useDispatch()
     const [deleteTask, result] = useDeleteTaskMutation()
 
-    function handleEditTask(){
+
+
+    function handleCheckedTasks(taskID) {
+        dispatch(changeCheckedTasks(taskID))
+    }
+
+    function handleEditTask() {
         dispatch(getTaskInfoInEditModal(todo))
     }
 
 
     function handleRemoveSingleTask(taskId) {
-        deleteTask({ taskId }).then(() => {
+        deleteTask({ taskId })
+        .then(() => {
             dispatch(removeSingleTask(taskId))
+            showSuccesMessage()
+        })
+        .catch(()=>{
+            showErrorMessage()
         })
     }
     return (
-        <>
+        <div className={styles.singleTodo}>
             <div className={styles.checkbox}>
                 <input type="checkbox"
                     onChange={() => {
@@ -47,6 +61,6 @@ export default function SingleTodo({ todo, handleCheckedTasks }) {
                     }}
                 ><FaEdit /></button>
             </div>
-        </>
+        </div>
     )
 }
