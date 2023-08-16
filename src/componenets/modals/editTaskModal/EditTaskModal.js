@@ -3,7 +3,7 @@ import styles from "./EditTaskModal.module.css"
 import { useUpdateTaskMutation } from "../../../redux/API/API"
 import { useDispatch, useSelector } from "react-redux"
 import { editTask , getTaskInfoInEditModal} from "../../../redux/reducer/reducer"
-import { showErrorMessage, showSuccesMessage } from "../../Toastify/Toastify"
+import { showErrorMessage, showSuccesMessage } from "../../../utils/utils"
 
 
 export default function EditTaskModal() {

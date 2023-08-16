@@ -1,17 +1,4 @@
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
-const showSuccesMessage = () => {
-    toast.success('Success !', {
-        position: toast.POSITION.TOP_RIGHT
-    });
-};
-const showErrorMessage = () => {
-    toast.error("Something wrong !", {
-        position: toast.POSITION.TOP_RIGHT
-    })
-}
+import { ToastContainer } from 'react-toastify';
 
 export default function Toastify() {
 
@@ -21,6 +8,3 @@ export default function Toastify() {
         </div>
     );
 }
-
-
-export {showErrorMessage, showSuccesMessage}

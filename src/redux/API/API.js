@@ -20,10 +20,20 @@ export const apiSlice = createApi({
             })
         }),
         deleteTask: builder.mutation({
-            query: (taskId ) => ({
+            query: (taskId) => ({
                 url: `/tasks/${taskId}`,
                 method: 'DELETE',
             }),
+        }),
+        removeCheckedTasks: builder.mutation({
+            query: (payload) => ({
+                url: '/tasks',
+                method: 'DELETE',
+                body: JSON.stringify({ ids: payload }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
         }),
         addTask: builder.mutation({
             query: (taskObj) => ({
@@ -33,16 +43,27 @@ export const apiSlice = createApi({
             })
         }),
         updateTask: builder.mutation({
-            query: ({id, ...taskObj}) => ({
+            query: ({ id, ...taskObj }) => ({
                 url: `/tasks/${id}`,
                 method: "PUT",
                 body: taskObj,
             })
-        })
+        }),
+        searchTask: builder.query({
+            query: (params) => `/tasks?q=${params}`
+        }),
     })
 })
 
 
 
-export const { useGetAllTasksQuery, useDeleteTaskMutation, useAddTaskMutation, useUpdateTaskMutation, useGetSingleTaskQuery } = apiSlice
+export const { 
+    useGetAllTasksQuery, 
+    useDeleteTaskMutation, 
+    useAddTaskMutation, 
+    useUpdateTaskMutation, 
+    useGetSingleTaskQuery, 
+    useRemoveCheckedTasksMutation,
+    useSearchTaskQuery
+} = apiSlice
 

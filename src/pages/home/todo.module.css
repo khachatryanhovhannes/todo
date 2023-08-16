@@ -30,6 +30,15 @@
     top:0
 }
 
+.pageControls{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100px;
+    background-color: rgb(173, 173, 173);
+}
+
 .pageControls>button:first-child{
     padding: 15px 60px;
     border-radius: 10px;
@@ -44,12 +53,22 @@
     color: white;
     background-color: red;
 }
-.drawTodoList{
-    display: flex;
-    align-items: stretch;
-    justify-content: space-around;
+
+.pageControls>div{
+    width: 30%;
+}
+
+
+
+.pageControls input[type="search"]{
     padding: 10px;
-    flex-wrap: wrap;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: transparent;
+    border: 1px solid grey;
+    background-color: rgb(219, 219, 219);
+    width: 100%;
 }
 
 
@@ -65,4 +84,36 @@
 
 button:disabled{
     opacity: 0.5;
+    cursor: default !important;
+
+}
+
+.searchingResult{
+    background-color: white;
+    padding: 0 10px;
+    width: 100%;
+    overflow: auto;
+    max-height: 300px;
+}
+
+.searchingResult div{
+    border-bottom: 1px solid grey;
+    padding-top: 10px;
+}
+
+.searchingResult h3{
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+.drawTodoList{
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.searchingResult *{
+    text-decoration: none;
 }

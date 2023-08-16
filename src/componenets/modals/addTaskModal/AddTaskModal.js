@@ -3,7 +3,7 @@ import styles from "./AddTaskModal.module.css"
 import { useAddTaskMutation } from "../../../redux/API/API"
 import { addTask } from "../../../redux/reducer/reducer"
 import { useDispatch } from "react-redux"
-import { showErrorMessage, showSuccesMessage } from "../../Toastify/Toastify"
+import { showErrorMessage, showSuccesMessage } from "../../../utils/utils"
 
 
 export default function AddTaskModal({ handleShowAddModal }) {
@@ -54,7 +54,6 @@ export default function AddTaskModal({ handleShowAddModal }) {
         }
         sendTaskData(newTaskObj)
             .then((taskObj) => {
-                console.log(taskObj)
                 dispatch(addTask(taskObj.data))
                 handleShowAddModal()
                 showSuccesMessage()
