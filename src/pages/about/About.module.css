@@ -1,8 +1,5 @@
 .aboutBack{
-    min-height: 100vh;
-    max-height: 100%;
-    background-color: lavender;
-    border: 1px solid transparent;
+    text-align: left;
 }
 
 .about{
@@ -13,6 +10,8 @@
     background-color: rgb(187, 187, 187);
     border-radius: 30px;
     padding: 20px 30px 50px;
+    min-height: 100vh;
+    max-height: 100%;
 }
 
 .about h1{

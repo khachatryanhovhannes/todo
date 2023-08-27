@@ -14,13 +14,13 @@ export default function SingleTask() {
     const { id } = useParams();
     const dispatch = useDispatch()
     const [taskData, setTaskData] = useState({})
-    const { data, error, isLoading } = useGetSingleTaskQuery(id)
     const [deleteTask, result] = useDeleteTaskMutation()
     const navigate = useNavigate();
     const editTaskObj = useSelector((state) => state.taskReducer.editTaskObj)
-
+    const { data, error, isLoading } = useGetSingleTaskQuery(id)
 
     useEffect(() => {
+
         if (data) {
             setTaskData(data)
         }

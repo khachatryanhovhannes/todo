@@ -1,3 +1,7 @@
+.singleTodo{
+    overflow: hidden;
+}
+
 .checkbox {
     text-align: right;
 }
@@ -15,9 +19,6 @@ h1{
     overflow: hidden;
 }
 
-p{
-    overflow: hidden;
-}
 
 .trash {
     padding: 13px;
@@ -53,18 +54,20 @@ p{
     text-decoration: none;
     color: black;
     font-weight: 300;
-    font-size: 40px;
+    font-size: 22px;
     padding: 0;
     margin: 0;
+
 }
 
 .todoDev{
-
     font-weight: 300;
+    font-size: 18px;
 }
 
 .todoImp{
     font-weight: 300;
+    font-size: 18px;
 }
 
 

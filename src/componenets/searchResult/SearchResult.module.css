@@ -1,0 +1,12 @@
+.singleSearchResult{
+    display: block;
+    border-bottom: 1px solid grey;
+    padding-top: 10px;
+    text-decoration: none;
+    color: grey
+}
+
+
+.singleSearchResult:hover{
+    color: black;
+}

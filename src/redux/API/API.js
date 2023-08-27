@@ -4,26 +4,32 @@ const REACT_APP_URL_API = process.env.REACT_APP_URL_API;
 
 
 export const apiSlice = createApi({
-    reducerPath: 'getAllTasks',
+    reducerPath: 'Tasks',
     baseQuery: fetchBaseQuery({ baseUrl: `http://localhost:3004` }),
     endpoints: (builder) => ({
         getAllTasks: builder.query({
             query: () => ({
                 url: `/tasks`,
                 method: "GET"
-            })
+            }),
+            providesTags: ['AllTasks'],
         }),
         getSingleTask: builder.query({
             query: (taskId) => ({
                 url: `/tasks/${taskId}`,
                 method: "GET"
-            })
+            }),
+            providesTags: ['SingleTask'],
         }),
         deleteTask: builder.mutation({
             query: (taskId) => ({
                 url: `/tasks/${taskId}`,
                 method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
             }),
+            invalidatesTags: ["AllTasks", 'SingleTask'],
         }),
         removeCheckedTasks: builder.mutation({
             query: (payload) => ({
@@ -33,37 +39,44 @@ export const apiSlice = createApi({
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                 },
-            })
+            }),
+            invalidatesTags: ['SingleTask', "AllTasks"],
         }),
         addTask: builder.mutation({
             query: (taskObj) => ({
                 url: `/tasks`,
                 method: 'POST',
-                body: taskObj
-            })
+                body: taskObj,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+            invalidatesTags: ["AllTasks", 'SingleTask'],
         }),
         updateTask: builder.mutation({
             query: ({ id, ...taskObj }) => ({
                 url: `/tasks/${id}`,
                 method: "PUT",
                 body: taskObj,
-            })
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+            invalidatesTags: ['SingleTask', "AllTasks"],
         }),
         searchTask: builder.query({
-            query: (params) => `/tasks?q=${params}`
+            query: (params) => `/tasks/search?q=${params}`
         }),
     })
 })
 
-
-
-export const { 
-    useGetAllTasksQuery, 
-    useDeleteTaskMutation, 
-    useAddTaskMutation, 
-    useUpdateTaskMutation, 
-    useGetSingleTaskQuery, 
+export const {
+    useGetAllTasksQuery,
+    useDeleteTaskMutation,
+    useAddTaskMutation,
+    useUpdateTaskMutation,
+    useGetSingleTaskQuery,
     useRemoveCheckedTasksMutation,
-    useSearchTaskQuery
+    useSearchTaskQuery,
 } = apiSlice
 

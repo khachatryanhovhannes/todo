@@ -13,5 +13,9 @@ const showErrorMessage = () => {
     })
 }
 
+const signOut = () => {
+    localStorage.removeItem('token')
+}
 
-export {showErrorMessage, showSuccesMessage}
+
+export {showErrorMessage, showSuccesMessage, signOut}

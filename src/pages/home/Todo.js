@@ -8,17 +8,21 @@ import { useGetAllTasksQuery, useSearchTaskQuery } from "../../redux/API/API";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllTasks } from "../../redux/reducer/reducer";
 import Loading from "../../componenets/loading/Loading";
-import { useDebounce } from "../../hooks"
-import { Link } from "react-router-dom"
+import { useDebounce } from "../../customHooks/customHooks";
+import SearchResult from "../../componenets/searchResult/SearchResult";
+import { useNavigate } from "react-router-dom";
 
 export default function Todo() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [userSignType, setUserSignType] = useState(false)
     const { data, error, isLoading } = useGetAllTasksQuery()
     const toDoList = useSelector((state) => state.taskReducer.toDoList)
     const editTaskObj = useSelector((state) => state.taskReducer.editTaskObj)
     const checkedTasks = useSelector((state) => state.taskReducer.checkedTasks)
     const [toggleConfirmModal, setToggleConfirmModal] = useState(false)
     const [showNewTaskModal, setShowNewTaskModal] = useState(false)
+
     const [searchText, setSearchText] = useState('');
     const debounced = useDebounce(searchText)
     const { data: searchResults } = useSearchTaskQuery(debounced);
@@ -26,6 +30,15 @@ export default function Todo() {
     const handleSearchChange = (event) => {
         setSearchText(event.target.value)
     }
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
+        if(token){
+            setUserSignType(true)
+        }else{
+            setSearchText(false)
+        }
+    },[])
 
     useEffect(() => {
         if (data) {
@@ -44,33 +57,26 @@ export default function Todo() {
 
     return (
         <>
-            <div className={styles.addButton}>
-                <button onClick={handleShowAddModal}
-                    disabled={checkedTasks.length}
-                >Add task</button>
-            </div>
             <div className={styles.pageControls}>
                 <button onClick={handleToggleShowCofirmModal}
                     disabled={!checkedTasks.length}
                 >Remove checked tasks</button>
+
+                <div className={styles.addButton}>
+                    <button onClick={handleShowAddModal}
+                        disabled={checkedTasks.length}
+                    >Add task</button>
+                </div>
                 <div>
                     <input type="search"
                         placeholder="Search..."
                         value={searchText}
                         onChange={handleSearchChange}
-                    />
-                    {searchText && <div className={styles.searchingResult}>
+                    /><div className={styles.searchingResult}>
                         {
-                            searchResults && searchResults.map(task => {
-                                return (
-                                    <div key={task.id}>
-                                        <Link to={`task/${task.id}`}>{task.title}</Link>
-                                        <p>{task.description}</p>
-                                    </div>
-                                )
-                            })
+                            searchResults && <SearchResult searchResults={searchResults}/>
                         }
-                    </div>}
+                    </div>
                 </div>
 
             </div>

@@ -5,6 +5,7 @@ const initialState = {
     toDoList: [],
     editTaskObj: {},
     checkedTasks: [],
+    userProfile: null,
 }
 
 

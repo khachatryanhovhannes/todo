@@ -1,5 +1,4 @@
 .addButton{
-    margin-top: 20px;
     display: flex;
     justify-content: center;
 }
@@ -27,11 +26,11 @@
     align-items: center;
     padding: 20px 60px;
     position: sticky;
-    top:0
+    top:0;
+    z-index: 1;
 }
 
 .pageControls{
-    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -93,18 +92,10 @@ button:disabled{
     padding: 0 10px;
     width: 100%;
     overflow: auto;
-    max-height: 300px;
+    max-height: 400px;
 }
 
-.searchingResult div{
-    border-bottom: 1px solid grey;
-    padding-top: 10px;
-}
 
-.searchingResult h3{
-    margin-top: 0px;
-    padding-top: 0px;
-}
 
 .drawTodoList{
     display: flex;
@@ -112,8 +103,4 @@ button:disabled{
     justify-content: space-around;
     padding: 10px;
     flex-wrap: wrap;
-}
-
-.searchingResult *{
-    text-decoration: none;
 }
