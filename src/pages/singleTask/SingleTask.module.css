@@ -15,6 +15,11 @@
     padding: 20px 30px 50px;
 }
 
+.singleTask>*{
+
+    overflow: hidden;
+}
+
 .singleTask h1{
     font-weight: 300;
     font-size: 50px;

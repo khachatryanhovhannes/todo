@@ -31,7 +31,13 @@ export default function SignUp() {
     const [repasswordErr, setRepasswordErr] = useState(false)
 
     const [repeatPassword, setRepeatPassword] = useState('')
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
 
+        if (token !== null) {
+            navigate('/')
+        }
+    })
 
     function validateData() {
         const { name, surname, email, password, tasksIds } = newUserObj;

@@ -18,7 +18,7 @@ export default function Navbar() {
                 <Link className={styles.signIn} to={'/signIn'}>Sign in</Link>:null}
 
 
-               {localStorage.getItem('token') && <Link className={styles.signIn} to={'/'} onClick={signOut}>Sign out</Link>}
+               {localStorage.getItem('token') && <Link className={styles.signIn} to={'/signIn'} onClick={signOut}>Sign out</Link>}
             </div>
         </header>
     )

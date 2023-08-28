@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import styles from "./SignIn.module.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSignInMutation } from "../../redux/API/userAPI"
 
@@ -12,6 +12,15 @@ export default function SignIn() {
 
     const [emailErr, setEmailErr] = useState(false)
     const [passwordErr, setPasswordErr] = useState(false)
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
+
+        if (token !== null) {
+            navigate('/')
+        }
+    })
+
 
     function validateData() {
         let validateDataAnswer = 0

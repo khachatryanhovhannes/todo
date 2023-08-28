@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 export default function Todo() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [userSignType, setUserSignType] = useState(false)
     const { data, error, isLoading } = useGetAllTasksQuery()
     const toDoList = useSelector((state) => state.taskReducer.toDoList)
     const editTaskObj = useSelector((state) => state.taskReducer.editTaskObj)
@@ -31,14 +30,12 @@ export default function Todo() {
         setSearchText(event.target.value)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         const token = localStorage.getItem('token');
-        if(token){
-            setUserSignType(true)
-        }else{
-            setSearchText(false)
+        if (token === null) {
+            navigate('/signIn')
         }
-    },[])
+    }, [])
 
     useEffect(() => {
         if (data) {
@@ -74,7 +71,7 @@ export default function Todo() {
                         onChange={handleSearchChange}
                     /><div className={styles.searchingResult}>
                         {
-                            searchResults && <SearchResult searchResults={searchResults}/>
+                            searchResults && <SearchResult searchResults={searchResults} />
                         }
                     </div>
                 </div>
